@@ -93,8 +93,9 @@ TOTAL: 15/15 puntos
 
 ═══════════════════════════════════════════════════════════════════════
 
-ALUMNO:       Ignacio Rodriguez
-FECHA:        29 de noviembre de 2025
+ALUMNOS:      Ignacio Rodriguez
+              Claudio Palta
+FECHA:        30 de noviembre de 2025
 ASIGNATURA:   Redes de Computadores
 
 ═══════════════════════════════════════════════════════════════════════
