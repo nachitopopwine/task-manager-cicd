@@ -123,4 +123,33 @@ router.delete('/api/tasks/:id', (req: Request, res: Response) => {
   res.json({ message: 'Tarea eliminada correctamente' });
 });
 
+// GET /api/info - Información del sistema
+router.get('/api/info', (req: Request, res: Response) => {
+  res.json({
+    message: 'Información del Sistema - Task Manager API',
+    version: '2.0.0',
+    author: 'Ignacio Nacho',
+    fecha: new Date().toISOString(),
+    features: [
+      'Gestión completa de tareas',
+      'Sistema de prioridades (low, medium, high)',
+      'Estados de tareas (pending, in-progress, completed)',
+      'Estadísticas en tiempo real',
+      'CI/CD con GitHub Actions y Azure App Services'
+    ],
+    deployment: {
+      platform: 'Azure App Services',
+      tier: 'F1 Free / B1 Basic',
+      cicd: 'GitHub Actions',
+      status: 'Producción',
+      region: 'East US'
+    },
+    tecnologias: {
+      backend: 'Express + TypeScript',
+      runtime: 'Node.js 20 LTS',
+      almacenamiento: 'In-Memory (sin base de datos)'
+    }
+  });
+});
+
 export default router;
