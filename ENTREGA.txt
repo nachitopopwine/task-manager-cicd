@@ -1,0 +1,100 @@
+═══════════════════════════════════════════════════════════════════════
+                    EJERCICIO B - CI/CD CON AZURE APP SERVICES
+═══════════════════════════════════════════════════════════════════════
+
+REPOSITORIO GITHUB:
+https://github.com/nachitopopwine/task-manager-cicd
+
+═══════════════════════════════════════════════════════════════════════
+
+URL DE LA APLICACIÓN EN AZURE:
+https://task-manager-nachitop.azurewebsites.net
+
+═══════════════════════════════════════════════════════════════════════
+
+VIDEO DE DEMOSTRACIÓN:
+https://drive.google.com/file/d/19UqP2uvhbqXfKCLQN-fvVmTo3mdl223K/view?usp=sharing
+
+═══════════════════════════════════════════════════════════════════════
+
+ENDPOINTS IMPLEMENTADOS:
+
+Ruta inicial (requisito del ejercicio):
+- GET /
+  → Información de la API con mensaje y lista de endpoints disponibles
+
+Endpoints adicionales implementados:
+- GET /api/health
+  → Health check del servidor (status, timestamp, uptime)
+
+- GET /api/tasks
+  → Listar todas las tareas con conteo
+
+- GET /api/tasks?status=pending
+  → Filtrar tareas por estado (pending, in-progress, completed)
+
+- GET /api/tasks/statistics
+  → Estadísticas en tiempo real (totales, por estado, por prioridad, tasa de completación)
+
+- GET /api/tasks/:id
+  → Obtener una tarea específica por su ID
+
+- POST /api/tasks
+  → Crear nueva tarea (requiere: title, description, priority opcional)
+
+- PUT /api/tasks/:id
+  → Actualizar tarea existente (permite cambiar: title, description, status, priority)
+
+- DELETE /api/tasks/:id
+  → Eliminar tarea por ID
+
+Endpoint agregado mediante Pull Request (7 puntos):
+- GET /api/info
+  → Información detallada del sistema, versión 2.0.0, autor, features,
+     deployment en Azure, tecnologías utilizadas
+
+═══════════════════════════════════════════════════════════════════════
+
+TECNOLOGÍAS UTILIZADAS:
+
+Backend:          Express + TypeScript
+Runtime:          Node.js 20 LTS
+Almacenamiento:   In-Memory (sin base de datos externa)
+Deployment:       Azure App Services (tier F1 Free / B1 Basic)
+CI/CD:            GitHub Actions
+Region:           East US
+
+═══════════════════════════════════════════════════════════════════════
+
+FLUJO DE CI/CD IMPLEMENTADO:
+
+1. Código fuente en repositorio GitHub público
+2. Push/Merge a rama 'main' activa GitHub Actions automáticamente
+3. Workflow ejecuta:
+   - Checkout del código
+   - Setup Node.js 20
+   - npm install (instalación de dependencias)
+   - npm run build (compilación de TypeScript a JavaScript)
+   - Upload artifact (empaquetado)
+   - Login a Azure (autenticación)
+   - Deploy a Azure Web App (despliegue)
+4. Aplicación disponible públicamente en URL de Azure
+5. Sin intervención manual
+
+═══════════════════════════════════════════════════════════════════════
+
+EVIDENCIA DE CUMPLIMIENTO:
+
+✅ [3 puntos] Repositorio público en GitHub con código completo
+✅ [5 puntos] Azure App Service funcionando con endpoints verificados
+✅ [7 puntos] Pull Request merged + segundo deploy exitoso + nuevo endpoint
+
+TOTAL: 15/15 puntos
+
+═══════════════════════════════════════════════════════════════════════
+
+ALUMNO:       Ignacio Rodriguez
+FECHA:        29 de noviembre de 2025
+ASIGNATURA:   Redes de Computadores
+
+═══════════════════════════════════════════════════════════════════════
