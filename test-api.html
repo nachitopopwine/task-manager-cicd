@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Probador de API - Task Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .url-config {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .url-config label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .url-config input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .url-config input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .endpoints {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .endpoint-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .endpoint-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .endpoint-btn:active {
+            transform: translateY(0);
+        }
+        
+        .response-area {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 500px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .response-area:empty::before {
+            content: 'Las respuestas aparecerán aquí...';
+            color: #888;
+            font-style: italic;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .status-success {
+            background: #10b981;
+            color: white;
+        }
+        
+        .status-error {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+        
+        .create-task-form {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .create-task-form h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .btn-submit {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .btn-submit:hover {
+            background: #059669;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Probador de API - Task Manager</h1>
+        <p class="subtitle">Ejercicio B - CI/CD con Azure App Services</p>
+        
+        <div class="url-config">
+            <label for="apiUrl">🔗 URL de tu API en Azure:</label>
+            <input type="text" id="apiUrl" placeholder="https://task-manager-tuapellido.azurewebsites.net" value="http://localhost:3000">
+        </div>
+        
+        <h2 style="margin-bottom: 15px;">📡 Endpoints GET</h2>
+        <div class="endpoints">
+            <button class="endpoint-btn" onclick="testEndpoint('/')">GET /</button>
+            <button class="endpoint-btn" onclick="testEndpoint('/api/health')">GET /api/health</button>
+            <button class="endpoint-btn" onclick="testEndpoint('/api/tasks')">GET /api/tasks</button>
+            <button class="endpoint-btn" onclick="testEndpoint('/api/tasks/statistics')">GET /api/tasks/statistics</button>
+            <button class="endpoint-btn" onclick="testEndpoint('/api/tasks?status=pending')">GET /api/tasks?status=pending</button>
+            <button class="endpoint-btn" onclick="testEndpoint('/api/tasks?status=completed')">GET /api/tasks?status=completed</button>
+            <button class="endpoint-btn" onclick="testEndpoint('/api/info')">GET /api/info (Nuevo)</button>
+        </div>
+        
+        <div class="create-task-form">
+            <h3>➕ Crear Nueva Tarea (POST)</h3>
+            <div class="form-group">
+                <label for="taskTitle">Título:</label>
+                <input type="text" id="taskTitle" placeholder="Ej: Completar examen">
+            </div>
+            <div class="form-group">
+                <label for="taskDescription">Descripción:</label>
+                <textarea id="taskDescription" placeholder="Ej: Terminar el ejercicio B del examen final"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="taskPriority">Prioridad:</label>
+                <select id="taskPriority">
+                    <option value="low">Baja</option>
+                    <option value="medium" selected>Media</option>
+                    <option value="high">Alta</option>
+                </select>
+            </div>
+            <button class="btn-submit" onclick="createTask()">Crear Tarea</button>
+        </div>
+        
+        <h2 style="margin-bottom: 15px;">📋 Respuesta:</h2>
+        <div id="response" class="response-area"></div>
+    </div>
+
+    <script>
+        async function testEndpoint(endpoint) {
+            const apiUrl = document.getElementById('apiUrl').value.trim();
+            const responseDiv = document.getElementById('response');
+            
+            if (!apiUrl) {
+                responseDiv.innerHTML = '<span class="status-badge status-error">ERROR</span>\nPor favor, ingresa la URL de tu API.';
+                return;
+            }
+            
+            responseDiv.innerHTML = '<div class="loading">⏳ Cargando...</div>';
+            
+            try {
+                const response = await fetch(apiUrl + endpoint);
+                const data = await response.json();
+                
+                const statusBadge = response.ok 
+                    ? '<span class="status-badge status-success">✓ ' + response.status + ' ' + response.statusText + '</span>'
+                    : '<span class="status-badge status-error">✗ ' + response.status + ' ' + response.statusText + '</span>';
+                
+                responseDiv.innerHTML = statusBadge + '\n' + 
+                    'Endpoint: ' + endpoint + '\n\n' +
+                    JSON.stringify(data, null, 2);
+            } catch (error) {
+                responseDiv.innerHTML = '<span class="status-badge status-error">ERROR</span>\n' + 
+                    'No se pudo conectar a la API.\n' +
+                    'Error: ' + error.message + '\n\n' +
+                    'Verifica que:\n' +
+                    '1. La URL sea correcta\n' +
+                    '2. El servidor esté ejecutándose\n' +
+                    '3. No haya problemas de CORS';
+            }
+        }
+        
+        async function createTask() {
+            const apiUrl = document.getElementById('apiUrl').value.trim();
+            const title = document.getElementById('taskTitle').value.trim();
+            const description = document.getElementById('taskDescription').value.trim();
+            const priority = document.getElementById('taskPriority').value;
+            const responseDiv = document.getElementById('response');
+            
+            if (!apiUrl) {
+                responseDiv.innerHTML = '<span class="status-badge status-error">ERROR</span>\nPor favor, ingresa la URL de tu API.';
+                return;
+            }
+            
+            if (!title || !description) {
+                responseDiv.innerHTML = '<span class="status-badge status-error">ERROR</span>\nPor favor, completa todos los campos.';
+                return;
+            }
+            
+            responseDiv.innerHTML = '<div class="loading">⏳ Creando tarea...</div>';
+            
+            try {
+                const response = await fetch(apiUrl + '/api/tasks', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        title: title,
+                        description: description,
+                        priority: priority
+                    })
+                });
+                
+                const data = await response.json();
+                
+                const statusBadge = response.ok 
+                    ? '<span class="status-badge status-success">✓ ' + response.status + ' Tarea creada</span>'
+                    : '<span class="status-badge status-error">✗ ' + response.status + ' ' + response.statusText + '</span>';
+                
+                responseDiv.innerHTML = statusBadge + '\n' + 
+                    'Endpoint: POST /api/tasks\n\n' +
+                    JSON.stringify(data, null, 2);
+                
+                if (response.ok) {
+                    // Limpiar formulario
+                    document.getElementById('taskTitle').value = '';
+                    document.getElementById('taskDescription').value = '';
+                    document.getElementById('taskPriority').value = 'medium';
+                }
+            } catch (error) {
+                responseDiv.innerHTML = '<span class="status-badge status-error">ERROR</span>\n' + 
+                    'No se pudo crear la tarea.\n' +
+                    'Error: ' + error.message;
+            }
+        }
+        
+        // Guardar URL en localStorage
+        document.getElementById('apiUrl').addEventListener('change', function() {
+            localStorage.setItem('apiUrl', this.value);
+        });
+        
+        // Cargar URL guardada
+        window.addEventListener('load', function() {
+            const savedUrl = localStorage.getItem('apiUrl');
+            if (savedUrl) {
+                document.getElementById('apiUrl').value = savedUrl;
+            }
+        });
+    </script>
+</body>
+</html>
